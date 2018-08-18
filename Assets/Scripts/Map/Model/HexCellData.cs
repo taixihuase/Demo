@@ -1,11 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using UnityEngine;
 
+[Serializable]
 public class HexCellData
 {
-    public HexCoordinate Pos { get; private set; }
+    [SerializeField]
+    private HexCoordinate pos;
+
+    public HexCoordinate Pos
+    {
+        get
+        {
+            return pos;
+        }
+    }
 
     public int Row
     {
@@ -25,6 +33,6 @@ public class HexCellData
 
     public void SetPos(HexCoordinate _pos)
     {
-        Pos = _pos;
+        pos = _pos;
     }
 }

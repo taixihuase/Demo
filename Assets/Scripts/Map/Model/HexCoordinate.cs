@@ -1,24 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using UnityEngine;
 
+[Serializable]
 public struct HexCoordinate
 {
-    public int Row { get; private set; }
+    [SerializeField]
+    private int row;
+    public int Row
+    {
+        get
+        {
+            return row;
+        }
+    }
 
-    public int Column { get; private set; }
+    [SerializeField]
+    public int column;
+    public int Column
+    {
+        get
+        {
+            return column;
+        }
+    }
 
     public void SetPos(int _row, int _col)
     {
-        Row = _row;
-        Column = _col;
+        row = _row;
+        column = _col;
     }
 
     public HexCoordinate(int _row, int _col)
     {
-        Row = _row;
-        Column = _col;
+        row = _row;
+        column = _col;
     }
 
     public override string ToString()
