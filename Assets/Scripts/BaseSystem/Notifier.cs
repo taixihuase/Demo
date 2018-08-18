@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts
+public class Notifier<T>: Singleton<T> where T: class, new()
 {
-    class MapModel
-    {
-    }
+
 }
