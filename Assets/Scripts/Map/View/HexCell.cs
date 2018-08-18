@@ -33,8 +33,9 @@ public class HexCell : MonoBehaviour
         mesh.name = "HexCell";
         mesh.vertices = HexConst.vertices;
         mesh.triangles = HexConst.triangles;
-        //mesh.colors = HexConst.colors;
+        mesh.colors = HexConst.colors;
         meshCollider.sharedMesh = mesh;
+        GetComponent<MeshRenderer>().sharedMaterial.color = HexConst.defaultColor;
     }
 
     public void SetData(HexCellData _data)

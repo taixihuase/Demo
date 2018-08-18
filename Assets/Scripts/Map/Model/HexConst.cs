@@ -6,13 +6,6 @@ public static class HexConst
     public const float innerRadius = outerRadius * 0.866025404f;
     public static Color defaultColor = Color.white;
 
-    public static Color[] colors =
-    {
-        defaultColor, defaultColor, defaultColor,
-        defaultColor, defaultColor, defaultColor,
-        defaultColor
-    };
-
     public static Vector3[] vertices =
     {
         new Vector3(0f, 0f, outerRadius),
@@ -30,6 +23,11 @@ public static class HexConst
         new Vector2(0, 1),
         new Vector2(1, 1),
         new Vector2(1, 0)
+    };
+
+    public static Color[] colors =
+    {
+        defaultColor, defaultColor, defaultColor, defaultColor, defaultColor, defaultColor, defaultColor
     };
 
     public static int[] triangles =
