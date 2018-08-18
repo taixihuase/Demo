@@ -14,20 +14,20 @@ public static class HexConst
         new Vector3(0f, 0f, -outerRadius),
         new Vector3(-innerRadius, 0f, -0.5f * outerRadius),
         new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
+        new Vector3(0f, 0f, outerRadius),
+        new Vector3(innerRadius, 0f, 0.5f * outerRadius),
+        new Vector3(innerRadius, 0f, -0.5f * outerRadius),
+        new Vector3(0f, 0f, -outerRadius),
+        new Vector3(-innerRadius, 0f, -0.5f * outerRadius),
+        new Vector3(-innerRadius, 0f, 0.5f * outerRadius),
         new Vector3(0f, 0f, outerRadius)
-    };
-
-    public static Vector2[] uv =
-    {
-        new Vector2(0, 0),
-        new Vector2(0, 1),
-        new Vector2(1, 1),
-        new Vector2(1, 0)
     };
 
     public static Color[] colors =
     {
-        defaultColor, defaultColor, defaultColor, defaultColor, defaultColor, defaultColor, defaultColor
+        defaultColor, defaultColor, defaultColor, defaultColor, defaultColor, defaultColor,
+        defaultColor, defaultColor, defaultColor, defaultColor, defaultColor, defaultColor,
+        defaultColor
     };
 
     public static int[] triangles =
@@ -37,6 +37,11 @@ public static class HexConst
         0, 3, 4,
         0, 4, 5,
         0, 5, 6,
-        0, 6, 1
+        0, 2, 1,
+        0, 3, 2,
+        0, 4, 3,
+        0, 5, 4,
+        0, 6, 5,
+        0, 1, 6
     };
 }

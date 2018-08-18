@@ -1,120 +1,75 @@
-﻿Shader "Custom/Texture/Single Texture (Rim)" 
+﻿Shader "Unlit/Rim1"
 {
-	Properties
-	{
-		_MainTex ("Texture", 2D) = "white" {}
-		_Size("Size",float)=0
-		_Color("color",Color)=(1,1,1,1)
+	Properties{
+		_Diffuse("Diffuse", Color) = (1, 1, 1, 1)
+		_RimColor("RimColor",Color) = (1,1,1,1)
+		_RimWidth("RimWidth",Range(0,1)) = 0.2
 	}
-	SubShader
-	{
-		Tags { "RenderType"="Opaque" }
-		LOD 100
- 
-		Pass
-		{
-			Blend SrcAlpha OneMinusSrcAlpha
-			Zwrite off
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			// make fog work
-			#pragma multi_compile_fog
-			
-			#include "UnityCG.cginc"
- 
-			struct appdata
-			{
-				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
-				float3 normal:NORMAL;
-			};
- 
-			struct v2f
-			{
-				float2 uv : TEXCOORD0;
- 
-				float4 vertex : SV_POSITION;
-			};
- 
-			sampler2D _MainTex;
-			float4 _MainTex_ST;
-			float _Size;
-			
-			v2f vert (appdata v)
-			{
-				v2f o;
-				float4 Vpos=mul(UNITY_MATRIX_MV,v.vertex);
-				float3 Vnormal=mul(UNITY_MATRIX_IT_MV,v.normal);
-				Vnormal.z=-0.05;
-				o.vertex=mul(UNITY_MATRIX_P,Vpos+float4(Vnormal,0)*_Size/10);
-				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
- 
-				return o;
-			}
-			
-			fixed4 frag (v2f i) : SV_Target
-			{
- 
- 
- 
- 
-				return fixed4(0,1,1,1);
-			}
-			ENDCG
-		}
- 
- 
-		Pass
-		{
-			Blend SrcAlpha OneMinusSrcAlpha
-			Zwrite off
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			// make fog work
-			#pragma multi_compile_fog
-			
-			#include "UnityCG.cginc"
- 
-			struct appdata
-			{
-				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
-				float3 normal:NORMAL;
-			};
- 
-			struct v2f
-			{
-				float2 uv : TEXCOORD0;
-				UNITY_FOG_COORDS(1)
-				float4 vertex : SV_POSITION;
-			};
- 
-			sampler2D _MainTex;
-			float4 _MainTex_ST;
-			float4 _Color;
- 
-			
-			v2f vert (appdata v)
-			{
-				v2f o;
- 
-				o.vertex=UnityObjectToClipPos(v.vertex);
-				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				UNITY_TRANSFER_FOG(o,o.vertex);
-				return o;
-			}
-			
-			fixed4 frag (v2f i) : SV_Target
-			{
-				// sample the texture
-				fixed4 col = tex2D(_MainTex, i.uv);
-				// apply fog
-				UNITY_APPLY_FOG(i.fogCoord, col);
-				return _Color*col;
-			}
-			ENDCG
-		}
+		SubShader{
+		Pass{
+		Tags{ "LightMode" = "ForwardBase" }
+
+		CGPROGRAM
+#pragma vertex vert
+#pragma fragment frag
+
+#include "Lighting.cginc"
+
+		fixed4 _Diffuse;
+	struct a2v {
+		float4 vert : POSITION;
+		float3 normal : NORMAL;
+	};
+
+	struct v2f {
+		float4 pos : SV_POSITION;
+		float3 worldNormal : TEXCOORD0;
+	};
+
+	v2f vert(a2v v) {
+		v2f o;
+		o.pos = UnityObjectToClipPos(v.vert);
+		o.worldNormal = mul((float3x3)unity_ObjectToWorld,v.normal);
+		return o;
 	}
+
+	fixed4 frag(v2f i) : SV_Target{
+		fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
+	fixed3 worldNormal = normalize(i.worldNormal);
+	fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
+	fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * saturate(dot(worldNormal, worldLightDir));
+	fixed3 color = ambient + diffuse;
+
+	return fixed4(color, 1.0);
+	}
+
+		ENDCG
+	}
+		Pass{
+		Cull Front
+		CGPROGRAM
+
+#pragma vertex vert
+#pragma fragment frag
+		fixed4 _RimColor;
+	float _RimWidth;
+	struct a2v {
+		float4 vert:POSITION;
+		float3 normal:NORMAL;
+	};
+	struct v2f {
+		float4 pos:SV_POSITION;
+	};
+	v2f vert(a2v v) {
+		v2f o;
+		o.pos = UnityObjectToClipPos(v.vert - v.normal*_RimWidth);
+		return o;
+	}
+	fixed4 frag(v2f i) :SV_Target{
+		return _RimColor;
+	}
+		ENDCG
+	}
+	}
+		FallBack "Diffuse"
 }
