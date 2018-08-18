@@ -6,32 +6,11 @@ public class HexMap : MonoBehaviour
     [SerializeField]
     private HexCell cellPrefab;
 
-    private HexCell[,] cells;
-    public HexCell[,] Cells
-    {
-        get
-        {
-            return cells;
-        }
-    }
+    public HexCell[,] Cells { get; private set; }
 
-    private int maxColumn;
-    public int MaxColumn
-    {
-        get
-        {
-            return maxColumn;
-        }
-    }
+    public int MaxColumn { get; private set; }
 
-    private int maxRow;
-    public int MaxRow
-    {
-        get
-        {
-            return maxRow;
-        }
-    }
+    public int MaxRow { get; private set; }
 
     private MapModel model;
 
@@ -39,47 +18,56 @@ public class HexMap : MonoBehaviour
     {
         model = MapModel.Inst;
         int[] cols = new int[9] { 5, 4, 3, 2, 1, 2, 3, 4, 5 };
-        InitMap(cols);
-        for(int i = 0; i < cols.Length; i++)
-        {
-            for(int j = 0; j < cols[i]; j++)
-            {
-                CreateCell(i, j);
-            }
-        }
+        InitMap(cols);        
     }
 
     public void InitMap(int[] cols)
     {
-        maxRow = cols.Length;
-        maxColumn = 0;
+        MaxRow = cols.Length;
+        MaxColumn = 0;
         for (int i = 0; i < cols.Length; i++)
         {
-            if (cols[i] > maxColumn)
+            if (cols[i] > MaxColumn)
             {
-                maxColumn = cols[i];
+                MaxColumn = cols[i];
             }
         }
-        cells = new HexCell[cols.Length, maxColumn];
-        model.InitMapData(maxRow, maxColumn);
+        Cells = new HexCell[cols.Length, MaxColumn];
+        List<HexCellData> dataList = new List<HexCellData>();
+        for (int i = 0; i < cols.Length; i++)
+        {
+            for (int j = 0; j < cols[i]; j++)
+            {
+                dataList.Add(CreateCell(i, j));
+            }
+        }
+        model.InitMapData(MaxRow, MaxColumn, dataList);
     }
 
     public void InitMap(List<int> cols)
     {
-        maxRow = cols.Count;
-        maxColumn = 0;
+        MaxRow = cols.Count;
+        MaxColumn = 0;
         for (int i = 0; i < cols.Count; i++)
         {
-            if (cols[i] > maxColumn)
+            if (cols[i] > MaxColumn)
             {
-                maxColumn = cols[i];
+                MaxColumn = cols[i];
             }
         }
-        cells = new HexCell[cols.Count, maxColumn];
-        model.InitMapData(maxRow, maxColumn);
+        Cells = new HexCell[cols.Count, MaxColumn];
+        List<HexCellData> dataList = new List<HexCellData>();
+        for (int i = 0; i < cols.Count; i++)
+        {
+            for (int j = 0; j < cols[i]; j++)
+            {
+                dataList.Add(CreateCell(i, j));
+            }
+        }
+        model.InitMapData(MaxRow, MaxColumn, dataList);
     }
 
-    private void CreateCell(int row, int col)
+    private HexCellData CreateCell(int row, int col)
     {
         Vector3 position;
         if (row % 2 == 0)
@@ -100,7 +88,7 @@ public class HexMap : MonoBehaviour
         HexCellData data = new HexCellData();
         data.SetPos(pos);
         cell.SetData(data);
-        cells[row, col] = cell;
-        model.SetCellData(data);
+        Cells[row, col] = cell;
+        return data;
     }
 }

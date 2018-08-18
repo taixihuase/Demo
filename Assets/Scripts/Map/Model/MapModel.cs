@@ -7,13 +7,14 @@ public class MapModel : Notifier<MapModel>
 {
     public HexCellData[,] mapData;
 
-    public void InitMapData(int row, int col)
+    public void InitMapData(int row, int col, List<HexCellData> datas)
     {
         mapData = new HexCellData[row, col];
-    }
-
-    public void SetCellData(HexCellData data)
-    {
-        mapData[data.Pos.Row, data.Pos.Column] = data;
+        for (int i = 0; i < datas.Count; i++)
+        {
+            HexCellData dt = datas[i];
+            mapData[dt.Row, dt.Column] = dt;
+        }
+        RaiseEvent(MapEventType.MAP_INIT);
     }
 }

@@ -8,20 +8,13 @@ public class HexCell : MonoBehaviour
     [SerializeField]
     private MeshCollider meshCollider;
 
-    private HexCellData data;
-    public HexCellData Data
-    {
-        get
-        {
-            return data;
-        }
-    }
+    public HexCellData Data { get; private set; }
 
     public HexCoordinate Pos
     {
         get
         {
-            return data.Pos;
+            return Data.Pos;
         }
     }
 
@@ -37,6 +30,6 @@ public class HexCell : MonoBehaviour
 
     public void SetData(HexCellData _data)
     {
-        data = _data;
+        Data = _data;
     }
 }

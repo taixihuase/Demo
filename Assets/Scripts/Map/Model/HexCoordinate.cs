@@ -5,34 +5,20 @@ using System.Text;
 
 public struct HexCoordinate
 {
-    private int row;
-    public int Row
-    {
-        get
-        {
-            return row;
-        }
-    }
+    public int Row { get; private set; }
 
-    private int column;
-    public int Column
-    {
-        get
-        {
-            return column;
-        }
-    }
+    public int Column { get; private set; }
 
     public void SetPos(int _row, int _col)
     {
-        row = _row;
-        column = _col;
+        Row = _row;
+        Column = _col;
     }
 
     public HexCoordinate(int _row, int _col)
     {
-        row = _row;
-        column = _col;
+        Row = _row;
+        Column = _col;
     }
 
     public override string ToString()

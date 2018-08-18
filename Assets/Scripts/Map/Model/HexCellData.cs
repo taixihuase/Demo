@@ -5,17 +5,26 @@ using System.Text;
 
 public class HexCellData
 {
-    private HexCoordinate pos;
-    public HexCoordinate Pos
+    public HexCoordinate Pos { get; private set; }
+
+    public int Row
     {
         get
         {
-            return pos;
+            return Pos.Row;
+        }
+    }
+
+    public int Column
+    {
+        get
+        {
+            return Pos.Column;
         }
     }
 
     public void SetPos(HexCoordinate _pos)
     {
-        pos = _pos;
+        Pos = _pos;
     }
 }
