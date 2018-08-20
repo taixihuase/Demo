@@ -27,6 +27,8 @@ public class HexCell : MonoBehaviour
         }
     }
 
+    private HexCell[] neighbor;
+
     void Start()
     {
         GetComponent<MeshFilter>().mesh = mesh = new Mesh();
@@ -41,5 +43,11 @@ public class HexCell : MonoBehaviour
     public void SetData(HexCellData _data)
     {
         data = _data;
+        neighbor = new HexCell[6];
+    }
+
+    public void SetNeighbor(MapDirectionType dir, HexCell cell)
+    {
+        neighbor[(int)dir] = cell;
     }
 }
